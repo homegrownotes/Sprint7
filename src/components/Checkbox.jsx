@@ -7,6 +7,21 @@ const Container = styled.div`
   gap: 20px;
 `;
 
+const Button = styled.button`
+  width: 30px;
+  height: 30px;
+  background-color: #fa8072;
+  color: white;
+  border-style: none;
+  border-radius: 5px;
+  margin-left: 5px;
+`;
+
+const Input = styled.input`
+  width: 30px;
+  border-style: none;
+`;
+
 export const Checkbox = ({ data, onChange }) => {
   const [total, setTotal] = useState(0); // => Define "price state".
   const [numPages, setNumPages] = useState(0); // => Define "price pages state".
@@ -25,6 +40,8 @@ export const Checkbox = ({ data, onChange }) => {
       setShowExtraOptions(isChecked);
       if (!isChecked) {
         setResetExtras(true);
+        setNumPages(0); // Reset the state to 0 when the checkbox is unchecked.
+        setNumLanguages(0);
       }
     }
 
@@ -39,12 +56,12 @@ export const Checkbox = ({ data, onChange }) => {
   };
 
   const handleNumPagesChange = (e) => {
-    const { value } = e.target;
+    const value = parseInt(e.target.value);
     setNumPages(value);
   };
 
   const handleNumLanguagesChange = (e) => {
-    const { value } = e.target;
+    const value = parseInt(e.target.value);
     setNumLanguages(value);
   };
 
@@ -78,21 +95,51 @@ export const Checkbox = ({ data, onChange }) => {
                 >
                   <label style={{ paddingBottom: "15px" }}>
                     Número de páginas:
-                    <input
-                      type="number"
+                    <Button
+                      onClick={() => setNumPages((prevState) => prevState + 1)}
+                    >
+                      +
+                    </Button>
+                    <Input
+                      type="text"
                       min="0"
                       value={numPages}
                       onChange={handleNumPagesChange}
                     />
+                    <Button
+                      onClick={() =>
+                        setNumPages((prevState) => Math.max(prevState - 1, 0))
+                      }
+                    >
+                      -
+                    </Button>
                   </label>
                   <label>
                     Número de idiomas:
-                    <input
-                      type="number"
+                    <Button
+                      onClick={() =>
+                        setNumLanguages((prevState) =>
+                          Math.max(prevState + 1, 0)
+                        )
+                      }
+                    >
+                      +
+                    </Button>
+                    <Input
+                      type="text"
                       min="0"
                       value={numLanguages}
                       onChange={handleNumLanguagesChange}
                     />
+                    <Button
+                      onClick={() =>
+                        setNumLanguages((prevState) =>
+                          Math.max(prevState - 1, 0)
+                        )
+                      }
+                    >
+                      -
+                    </Button>
                   </label>
                 </div>
               )}
